@@ -4,6 +4,7 @@
 
   <!-- PCL PREPROCESSING -->
   <!-- PCL nodelet manager -->
+  
   <node pkg="nodelet" type="nodelet" name="pcl_manager" args="manager" output="$(arg stdout)"/>
 
   <node pkg="nodelet" type="nodelet" name="pass_through_z_velo" args="load pcl/PassThrough pcl_manager" output="$(arg stdout)">
