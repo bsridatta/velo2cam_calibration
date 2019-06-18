@@ -39,8 +39,8 @@
       z: 1
       angle_threshold: 0.55
       circle_radius: 0.12
-      passthrough_radius_min: 1.5
-      passthrough_radius_max: 5.5
+      passthrough_radius_min: 0.3  # Adjust according to the distance of the board from velodyne
+      passthrough_radius_max: 2.5  # Check /laser_pattern/range_filtered_velo
     </rosparam>
   </node>
 

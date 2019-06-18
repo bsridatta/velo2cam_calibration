@@ -8,8 +8,8 @@
     <param name="use_camera_info" value="false" />
     <param name="debug_view" value="false" />
     <param name="edge_type" value="0" />
-    <param name="canny_threshold1" value="100" />
-    <param name="canny_threshold2" value="200" />
+    <param name="canny_threshold1" value="5" />		#100
+    <param name="canny_threshold2" value="10" />		#200
     <param name="apertureSize" value="3" />
     <param name="apply_blur_pre" value="true" />
     <param name="postBlurSize" value="13" />

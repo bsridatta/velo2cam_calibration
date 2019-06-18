@@ -1,0 +1,8 @@
+<launch>
+
+ <remap from="/zed/left/camera_info" to="/stereo_camera/left/camera_info"/>
+ <remap from="/zed/left/image_rect_color" to="/stereo_camera/left/image_rect_color"/>
+ <remap from="/zed/right/camera_info" to="/stereo_camera/right/camera_info"/>
+ <remap from="/zed/right/image_rect_color" to="/stereo_camera/right/image_rect_color"/>
+ 
+</launch>

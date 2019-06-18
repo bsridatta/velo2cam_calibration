@@ -1,5 +1,11 @@
 <launch>
-  <include file="$(find velo2cam_calibration)/launch/stereo_pattern.launch" />
-  <include file="$(find velo2cam_calibration)/launch/laser_pattern.launch" />
+
+  <remap from="/stereo_camera/left/camera_info" to="/zed/left/camera_info" />
+  <remap from="/stereo_camera/left/image_rect_color" to="/zed/left/image_rect_color" />
+  <remap from="/stereo_camera/right/camera_info" to="/zed/right/camera_info" />
+  <remap from="/stereo_camera/right/image_rect_color" to="/zed/right/image_rect_color" />
+
+  <include file="$(find velo2cam_calibration)/launch/real_stereo_pattern.launch" />
+  <include file="$(find velo2cam_calibration)/launch/real_laser_pattern.launch" />
   <include file="$(find velo2cam_calibration)/launch/velo2cam_calibration.launch" />
 </launch>

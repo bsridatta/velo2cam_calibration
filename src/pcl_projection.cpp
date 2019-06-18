@@ -179,7 +179,7 @@ void callback(const PointCloud2::ConstPtr& pcl_msg, const CameraInfoConstPtr& ci
       float depth = filtered_pcl_cloud->points[i].range;
       // Want it faster? Try depth = transf_points(2, i)
       COLOUR c = GetColour(int(depth/20.0*255.0), 0, 255);
-      cv::circle(image, p, 3, cv::Scalar(int(255*c.b),int(255*c.g),int(255*c.r)), -1);
+      cv::circle(image, p, 3, cv::Scalar(int(0*255*c.b),int(0*255*c.g),int(255*c.r)), -1);
     }
   }
 
