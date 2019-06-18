@@ -1,15 +1,15 @@
 <launch>
 
   <arg name="stdout" default="screen" />
-
+  <arg name="cam_name" default="stereo_camera" />
   <!-- Edge detection -->
   <node name="edge_detection" pkg="opencv_apps" type="edge_detection" output="$(arg stdout)" >
-    <remap from="image" to="/stereo_camera/left/image_rect_color" />
+    <remap from="image" to="/$(arg cam_name)/left/image_rect_color" />
     <param name="use_camera_info" value="false" />
     <param name="debug_view" value="false" />
     <param name="edge_type" value="0" />
-    <param name="canny_threshold1" value="5" />		#100
-    <param name="canny_threshold2" value="10" />		#200
+    <param name="canny_threshold1" value="100" />		#100
+    <param name="canny_threshold2" value="200" />		#200
     <param name="apertureSize" value="3" />
     <param name="apply_blur_pre" value="true" />
     <param name="postBlurSize" value="13" />
@@ -20,8 +20,8 @@
 
   <node pkg="velo2cam_calibration" type="levinson" name="levinson" output="screen">
     <param name="listen_to_tf" value="false"/>
-    <remap from="~image" to="/stereo_camera/left/image_rect_color"/>
-    <remap from="~camera_info" to="/stereo_camera/left/camera_info"/>
+    <remap from="~image" to="/$(arg cam_name)/left/image_rect_color"/>
+    <remap from="~camera_info" to="/$(arg cam_name)/left/camera_info"/>
     <remap from="~cloud" to="/velodyne_points"/>
   </node>
 

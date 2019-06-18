@@ -1,0 +1,10 @@
+{
+    "python.autoComplete.extraPaths": [
+        "/home/driverless/catkin_ws_calibration/devel/lib/python2.7/dist-packages",
+        "/opt/ros/kinetic/lib/python2.7/dist-packages",
+        "/home/driverless/models/research/slim",
+        "/home/driverless/models/research/slim",
+        "/home/driverless/models",
+        "/home/driverless/models/research"
+    ]
+}

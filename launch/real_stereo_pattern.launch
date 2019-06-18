@@ -1,16 +1,11 @@
 <launch>
 
-
-  <remap from="/stereo_camera/left/camera_info" to="/zed/left/camera_info" />
-  <remap from="/stereo_camera/left/image_rect_color" to="/zed/left/image_rect_color" />
-  <remap from="/stereo_camera/right/camera_info" to="/zed/right/camera_info" />
-  <remap from="/stereo_camera/right/image_rect_color" to="/zed/right/image_rect_color" />
-
+  <arg name="cam_name" default="stereo_camera" />
 
   <arg name="stdout" default="screen" />
 
   <!-- Full disparity to pointcloud -->
-  <group ns="stereo_camera">
+  <group ns="$(arg cam_name)">
     <!-- Manager + nodelet -->
     <node pkg="nodelet" type="nodelet" name="stereo_manager" args="manager"/>
     <node pkg="nodelet" type="nodelet" name="disparity"
@@ -35,7 +30,7 @@
 
   <!-- Edge detection -->
   <node name="edge_detection" pkg="opencv_apps" type="edge_detection" output="$(arg stdout)" >
-    <remap from="image" to="/stereo_camera/left/image_rect_color" />
+    <remap from="image" to="/$(arg cam_name)/left/image_rect_color" />
     <param name="use_camera_info" value="false" />
     <param name="debug_view" value="false" />
     <param name="edge_type" value="0" />
@@ -51,14 +46,14 @@
 
   <!-- Masked disparity - only edges -->
   <node name="v2c_disp_masker" pkg="velo2cam_calibration" type="v2c_disp_masker" output="$(arg stdout)" >
-    <remap from="~image" to="stereo_camera/disparity" />
+    <remap from="~image" to="$(arg cam_name)/disparity" />
     <remap from="~mask" to="edge_detection/image" />
-    <remap from="~output" to="stereo_camera/edges_disparity" />
+    <remap from="~output" to="$(arg cam_name)/edges_disparity" />
     <param name="edges_threshold" value="32" />
   </node>
 
   <!-- Masked disparity to pointcloud -->
-  <group ns="stereo_camera">
+  <group ns="$(arg cam_name)">
     <!-- Manager + nodelet -->
     <node pkg="nodelet" type="nodelet" name="pointclouder_manager_edges" args="manager"/>
     <node pkg="nodelet" type="nodelet" name="pointclouder_edges"
@@ -74,8 +69,8 @@
 
   <!-- Masked cloud pass through -->
   <node pkg="nodelet" type="nodelet" name="edges_pass_through_z" args="load pcl/PassThrough stereo_pcl_manager" output="$(arg stdout)">
-    <remap from="~input" to="/stereo_camera/edge_points2" />
-    <remap from="~output" to="/stereo_camera/edge_z_filtered_cloud" />
+    <remap from="~input" to="/$(arg cam_name)/edge_points2" />
+    <remap from="~output" to="/$(arg cam_name)/edge_z_filtered_cloud" />
     <rosparam>
       filter_field_name: z
       filter_limit_min: 2
@@ -88,8 +83,8 @@
 
   <!-- Full cloud pass through -->
   <node pkg="nodelet" type="nodelet" name="full_pass_through_z" args="load pcl/PassThrough stereo_pcl_manager" output="$(arg stdout)">
-    <remap from="~input" to="/stereo_camera/points2" />
-    <remap from="~output" to="/stereo_camera/z_filtered_cloud" />
+    <remap from="~input" to="/$(arg cam_name)/points2" />
+    <remap from="~output" to="/$(arg cam_name)/z_filtered_cloud" />
     <rosparam>
       filter_field_name: z
       filter_limit_min: 2
@@ -102,7 +97,7 @@
 
   <!-- Plane finding on the masked cloud -->
   <node pkg="velo2cam_calibration" type="v2c_plane_segmentation" name="planar_segmentation" output="$(arg stdout)" required="true">
-    <remap from="~input"   to="/stereo_camera/z_filtered_cloud" />
+    <remap from="~input"   to="/$(arg cam_name)/z_filtered_cloud" />
     <rosparam>
       segmentation_type: 1
       axis: [0.0, 1.0, 0.0]
@@ -113,7 +108,7 @@
 
   <!-- Extract plane cloud -->
   <node pkg="nodelet" type="nodelet" name="extract_plane_indices" args="load pcl/ExtractIndices stereo_pcl_manager" output="screen">
-    <remap from="~input"   to="/stereo_camera/z_filtered_cloud" />
+    <remap from="~input"   to="/$(arg cam_name)/z_filtered_cloud" />
     <remap from="~indices" to="/planar_segmentation/inliers" />
     <rosparam>
       negative: false
@@ -122,7 +117,7 @@
 
   <!-- Our node -->
   <node pkg="velo2cam_calibration" type="stereo_pattern" name="stereo_pattern" output="screen">
-    <remap from="~cloud2" to="/stereo_camera/edge_z_filtered_cloud"/>
+    <remap from="~cloud2" to="/$(arg cam_name)/edge_z_filtered_cloud"/>
     <remap from="~cam_plane_coeffs" to="/planar_segmentation/model"/>
     <param name="~min_plane_normal_z" value="0.8"/>
     <param name="~line_threshold" value="0.1"/>
@@ -141,5 +136,5 @@
     </rosparam>
   </node>
 
-  <node pkg="tf" type="static_transform_publisher" name="stereo_ros_tf" args="0 0 0 -1.57079632679 0 -1.57079632679 stereo stereo_camera 100"/>
+  <node pkg="tf" type="static_transform_publisher" name="stereo_ros_tf" args="0 0 0 -1.57079632679 0 -1.57079632679 stereo $(arg cam_name) 100"/>
 </launch>

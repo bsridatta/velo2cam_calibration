@@ -1,0 +1,17 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "",
+        "limitSymbolsToIncludedHeaders": true
+      },
+      "includePath": [
+        "/home/driverless/catkin_ws_calibration/devel/include",
+        "/opt/ros/kinetic/include",
+        "/home/driverless/catkin_ws_calibration/src/velo2cam_calibration/include",
+        "/usr/include"
+      ],
+      "name": "Linux"
+    }
+  ]
+}

@@ -1,9 +1,11 @@
 <launch>
 
+  <arg name="cam_name" default="stereo_camera" />
+
   <node pkg="velo2cam_calibration" type="pcl_coloring" name="pcl_coloring" output="screen">
     <remap from="~pointcloud" to="/velodyne_points"/>
-    <remap from="~camera_info" to="/stereo_camera/left/camera_info"/>
-    <remap from="~image" to="/stereo_camera/left/image_rect_color"/>
+    <remap from="~camera_info" to="/$(arg cam_name)/left/camera_info"/>
+    <remap from="~image" to="/$(arg cam_name)/left/image_rect_color"/>
   </node>
 
 </launch>
