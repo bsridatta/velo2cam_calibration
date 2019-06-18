@@ -3,6 +3,7 @@
   <arg name="stdout" default="screen" />
 
   <!-- PCL PREPROCESSING -->
+  
   <!-- PCL nodelet manager -->
   <node pkg="nodelet" type="nodelet" name="pcl_manager" args="manager" output="$(arg stdout)"/>
 
