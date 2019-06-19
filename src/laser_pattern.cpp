@@ -365,6 +365,9 @@ void callback(const PointCloud2::ConstPtr& laser_cloud){
   }
 
   if(found_centers.size() >= min_centers_found_ && found_centers.size() < 5){
+    ROS_INFO("[YES] !!!!!!!! centers Found !!!!!! : %ld", found_centers.size());
+    ROS_WARN("[YES] !!!!!!!! centers Found !!!!!! : %ld", found_centers.size());
+
     for (std::vector<std::vector<float> >::iterator it = found_centers.begin(); it < found_centers.end(); ++it){
       pcl::PointXYZ center;
       center.x = (*it)[0];
@@ -404,6 +407,7 @@ void callback(const PointCloud2::ConstPtr& laser_cloud){
   // Compute circles centers
   getCenterClusters(cumulative_cloud, centers_cloud, cluster_size_, nFrames/2, nFrames);
   if (centers_cloud->points.size()>4){
+    ROS_WARN("[YES] !!!!!!!! centers Found !!!!!! : %ld", found_centers.size());
     getCenterClusters(cumulative_cloud, centers_cloud, cluster_size_, 3.0*nFrames/4.0, nFrames);
   }
 
@@ -420,7 +424,7 @@ void callback(const PointCloud2::ConstPtr& laser_cloud){
     to_send.cloud = ros2_pointcloud;
 
     centers_pub.publish(to_send);
-    //if(DEBUG) ROS_INFO("Pattern centers published");
+    if(DEBUG) ROS_INFO("Pattern centers published");
   }
 }
 

@@ -1,6 +1,6 @@
 <launch>
 
-  <arg name="cam_name" default="stereo_camera" />
+  <arg name="cam_name" default="zed" />
   <arg name="stdout" default="screen" />
 
   <node pkg="velo2cam_calibration" type="levinson" name="levinson" output="screen">

@@ -1,6 +1,6 @@
 <launch>
 
-  <arg name="cam_name" default="stereo_camera" />
+  <arg name="cam_name" default="zed" />
 
 
   <node pkg="velo2cam_calibration" type="pcl_projection" name="pcl_projection" output="screen">

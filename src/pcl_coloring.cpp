@@ -110,7 +110,7 @@ int main(int argc, char **argv){
   ros::init(argc, argv, "pcl_coloring");
   ros::NodeHandle nh_("~"); // LOCAL
   // Parameters
-  nh_.param<std::string>("target_frame", target_frame, "/stereo_camera");
+  nh_.param<std::string>("target_frame", target_frame, "/zed_left_camera_optical_frame");
   nh_.param<std::string>("source_frame", source_frame, "/velodyne");
 
   // Subscribers

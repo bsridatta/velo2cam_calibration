@@ -121,8 +121,6 @@ Visualization Manager:
         All Enabled: false
         stereo:
           Value: true
-        stereo_camera:
-          Value: true
       Marker Scale: 1
       Name: TF
       Show Arrows: true

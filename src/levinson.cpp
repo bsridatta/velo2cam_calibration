@@ -541,7 +541,7 @@ int main(int argc, char **argv){
   image_transport::ImageTransport it_(nh_);
 
   // Parameters
-  nh_.param<std::string>("target_frame", target_frame, "/stereo_camera");
+  nh_.param<std::string>("target_frame", target_frame, "/zed");
   nh_.param<std::string>("source_frame", source_frame, "/velodyne");
   nh_.param<bool>("listen_to_tf", listen_to_tf_, true);
   nh_.param<bool>("save_to_file", save_to_file_, true);

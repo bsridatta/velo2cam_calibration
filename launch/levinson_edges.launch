@@ -1,7 +1,7 @@
 <launch>
 
   <arg name="stdout" default="screen" />
-  <arg name="cam_name" default="stereo_camera" />
+  <arg name="cam_name" default="zed" />
   <!-- Edge detection -->
   <node name="edge_detection" pkg="opencv_apps" type="edge_detection" output="$(arg stdout)" >
     <remap from="image" to="/$(arg cam_name)/left/image_rect_color" />

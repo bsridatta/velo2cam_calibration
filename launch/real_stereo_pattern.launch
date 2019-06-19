@@ -1,6 +1,6 @@
 <launch>
 
-  <arg name="cam_name" default="stereo_camera" />
+  <arg name="cam_name" default="zed" />
 
   <arg name="stdout" default="screen" />
 
@@ -136,5 +136,5 @@
     </rosparam>
   </node>
 
-  <node pkg="tf" type="static_transform_publisher" name="stereo_ros_tf" args="0 0 0 -1.57079632679 0 -1.57079632679 stereo $(arg cam_name) 100"/>
+  <node pkg="tf" type="static_transform_publisher" name="stereo_ros_tf" args="0 0 0 -1.57079632679 0 -1.57079632679 stereo zed_left_camera_optical_frame 100"/>
 </launch>

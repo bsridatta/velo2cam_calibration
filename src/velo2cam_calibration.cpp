@@ -346,7 +346,7 @@ void stereo_callback(velo2cam_calibration::ClusterCentroids::ConstPtr image_cent
   tf2_ros::TransformListener tfListener(tfBuffer);
   geometry_msgs::TransformStamped transformStamped;
   try{
-    transformStamped = tfBuffer.lookupTransform("stereo", "stereo_camera",
+    transformStamped = tfBuffer.lookupTransform("stereo", "zed",
                              ros::Time(0), ros::Duration(20));
   }
   catch (tf2::TransformException &ex) {
@@ -366,8 +366,8 @@ void stereo_callback(velo2cam_calibration::ClusterCentroids::ConstPtr image_cent
   tf::TransformListener listener;
   tf::StampedTransform transform;
   try{
-    listener.waitForTransform("stereo", "stereo_camera", ros::Time(0), ros::Duration(20.0));
-    listener.lookupTransform ("stereo", "stereo_camera", ros::Time(0), transform);
+    listener.waitForTransform("stereo", "zed", ros::Time(0), ros::Duration(20.0));
+    listener.lookupTransform ("stereo", "zed", ros::Time(0), transform);
   }catch (tf::TransformException& ex) {
     ROS_WARN("TF exception:\n%s", ex.what());
     return;
