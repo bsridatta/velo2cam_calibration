@@ -146,7 +146,7 @@ void callback(const PointCloud2::ConstPtr& pcl_msg, const CameraInfoConstPtr& ci
   pcl::PassThrough<Velodyne::Point> pass;
   pass.setInputCloud (pcl_cloud);
   pass.setFilterFieldName ("x");
-  pass.setFilterLimits (0.0, 360.0);
+  pass.setFilterLimits (0.0, 100.0);
   pass.filter (*filtered_pcl_cloud);
 
   // Move the lidar cloud to the camera frame
