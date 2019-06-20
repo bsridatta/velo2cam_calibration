@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<launch>
+    <arg name="stdout" default="screen" />
+    <node pkg="tf" type="static_transform_publisher" name="stereo_ros_tf" args="0 0 0 -1.57079632679 0 -1.57079632679 stereo zed_left_camera_optical_frame 10" />
+    <node pkg="tf" type="static_transform_publisher" name="l2c_tf" args="-0.122182 0.130684 -0.0774603 -0.0457732 -0.00164803 -0.0163307 stereo velodyne 100" />
+</launch>
