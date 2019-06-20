@@ -347,8 +347,8 @@ void stereo_callback(velo2cam_calibration::ClusterCentroids::ConstPtr image_cent
   tf2_ros::TransformListener tfListener(tfBuffer);
   geometry_msgs::TransformStamped transformStamped;
   try{
-    transformStamped = tfBuffer.lookupTransform("stereo", "zed",
-                             ros::Time(0), ros::Duration(20));
+    transformStamped = tfBuffer.lookupTransform("stereo", "zed_left_camera_optical_frame",
+                             ros::Time(0), ros::Duration(20));    //TODO mat be zed 
   }
   catch (tf2::TransformException &ex) {
     ROS_WARN("%s",ex.what());
@@ -367,8 +367,8 @@ void stereo_callback(velo2cam_calibration::ClusterCentroids::ConstPtr image_cent
   tf::TransformListener listener;
   tf::StampedTransform transform;
   try{
-    listener.waitForTransform("stereo", "zed", ros::Time(0), ros::Duration(20.0));
-    listener.lookupTransform ("stereo", "zed", ros::Time(0), transform);
+    listener.waitForTransform("stereo", "zed_left_camera_optical_frame", ros::Time(0), ros::Duration(20.0));
+    listener.lookupTransform ("stereo", "zed_left_camera_optical_frame", ros::Time(0), transform);
   }catch (tf::TransformException& ex) {
     ROS_WARN("TF exception:\n%s", ex.what());
     return;
@@ -390,7 +390,7 @@ void stereo_callback(velo2cam_calibration::ClusterCentroids::ConstPtr image_cent
   cam_buffer.push_back(std::tuple<int, int,pcl::PointCloud<pcl::PointXYZ>, std::vector<pcl::PointXYZ> >(image_centroids->total_iterations,image_centroids->cluster_iterations,*camera_cloud,cv));
   cam_count = image_centroids->total_iterations;
 
-  if(DEBUG) ROS_INFO("[V2C] CAMERA");
+  if(TEST) ROS_INFO("[V2C] CAMERA");
 
   for(vector<pcl::PointXYZ>::iterator it=cv.begin(); it<cv.end(); ++it){
     if (DEBUG) cout << "c" << it - cv.begin() << "="<< "[" << (*it).x << " " << (*it).y << " " << (*it).z << "]"<<endl;

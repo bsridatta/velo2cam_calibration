@@ -44,6 +44,7 @@
 
 using namespace std;
 using namespace sensor_msgs;
+bool TEST = 1;
 
 image_transport::Publisher pub;
 
@@ -185,7 +186,7 @@ void callback(const PointCloud2::ConstPtr& pcl_msg, const CameraInfoConstPtr& ci
 
   // Publish
   pub.publish(cv_bridge::CvImage(image_msg->header, image_msg->encoding, image).toImageMsg());
-  // if(DEBUG) ROS_INFO("Done");
+  if(TEST) ROS_INFO("Done");
 }
 
 int main(int argc, char **argv){
