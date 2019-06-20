@@ -1,4 +1,4 @@
-Visualizable topics					  Frames		Where to see/Toggle view		use	
+Visualizable topics					  Frames		Where to see/Toggle view		         use	
 								infront - points before stereo before velodyne		
 
 /edge_detection/image* 					not frame dependent		images	                 check stereo edges		
@@ -8,8 +8,9 @@ Visualizable topics					  Frames		Where to see/Toggle view		use
 /laser_pattern/debug					velodyne			zoom out/look up
 /laser_pattern/pattern_circles				velodyne			in front
 /laser_pattern/range_filtered_velo			velodyne			in front		points corresponding to plane
-
+/stereo_pattern/transf_cam					--doesnt 				pub 					anything---
 /laser_pattern/rotated_pattern				cant find 			??			??
+
 /laser_pattern/plane_model
 /move_base_simple/goal
 /pass_through_x_velo/parameter_descriptions
@@ -19,13 +20,7 @@ Visualizable topics					  Frames		Where to see/Toggle view		use
 /pcl_manager/bond
 /planar_segmentation/inliers
 /planar_segmentation/model
-/planar_segmentation/parameter_descriptions
-/planar_segmentation/parameter_updates
-/rosout
-/rosout_agg
 /stereo_camera/disparity
-/stereo_camera/disparity/parameter_descriptions
-/stereo_camera/disparity/parameter_updates
 /stereo_camera/edge_points2
 /stereo_camera/edge_z_filtered_cloud
 /stereo_camera/edges_disparity
@@ -47,7 +42,6 @@ Visualizable topics					  Frames		Where to see/Toggle view		use
 /stereo_pattern/parameter_descriptions
 /stereo_pattern/parameter_updates
 /stereo_pattern/plane_edges_cloud
-/stereo_pattern/transf_cam
 /stereo_pattern/xy_pattern
 /stereo_pcl_manager/bond
 

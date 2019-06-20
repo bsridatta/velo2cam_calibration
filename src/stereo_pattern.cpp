@@ -49,6 +49,8 @@ using namespace sensor_msgs;
 
 int nFrames;
 int images_proc_=0, images_used_=0;
+bool TEST = 1;
+
 
 double circle_threshold_;
 double line_threshold_;
@@ -75,12 +77,15 @@ ros::Publisher xy_pattern_pub;
 ros::Publisher no_circles_pub;
 ros::Publisher cumulative_pub;
 ros::Publisher final_pub;
+ros::Publisher centers_pub;
 ros::Publisher transf_pub;
 ros::Publisher auxpoint_pub;
 
 pcl::PointCloud<pcl::PointXYZ>::Ptr cumulative_cloud;
 
 std_msgs::Header header_;
+
+
 
 void publish_cloud(pcl::PointCloud<pcl::PointXYZ>::Ptr input_cloud, ros::Publisher pub){
   sensor_msgs::PointCloud2 ros_cloud;
@@ -107,6 +112,10 @@ void callback(const PointCloud2::ConstPtr& camera_cloud,
   if (cam_plane_coeffs->values[2]<min_plane_normal_z_){
     ROS_WARN("[Camera] Estimated plane is not valid.");
     return;
+  }
+  else{
+    if(TEST) ROS_INFO("[Camera] Estimated plane is valid");
+
   }
 
   // Segment planecircles_pub2
@@ -303,7 +312,7 @@ void callback(const PointCloud2::ConstPtr& camera_cloud,
       ROS_WARN ("[Camera] Could not estimate a circle model for the given dataset.");
       break;
     }else{
-      if(DEBUG) ROS_INFO ("[Camera] Found circle: %lu inliers", inliers->indices.size ());
+      if(0) ROS_INFO ("[Camera] Found circle: %lu inliers", inliers->indices.size ()); //TODO
     }
 
     // Extract the inliers
@@ -345,9 +354,10 @@ void callback(const PointCloud2::ConstPtr& camera_cloud,
   }while(found_centers.size() < 4 && valid);
 
   if (found_centers.size() < min_centers_found_ || found_centers.size() > 4){
-    ROS_WARN("Not enough centers: %ld", found_centers.size());
+    ROS_WARN("[camera]Not enough centers: %ld", found_centers.size());
     return;
   }else{
+     ROS_INFO("[YES-Stereo] enough centers: %ld", found_centers.size());
     for (std::vector<std::vector<float> >::iterator it = found_centers.begin(); it < found_centers.end(); ++it){
       pcl::PointXYZ center;
       center.x = (*it)[0];
@@ -388,7 +398,7 @@ void callback(const PointCloud2::ConstPtr& camera_cloud,
     getCenterClusters(cumulative_cloud, final_cloud, 0.1, 3.0*nFrames/4.0, nFrames);
   }
 
-  if (final_cloud->points.size()==4){
+  if (final_cloud->points.size()==3){  //TODO - may not change to experiment with 3 centers
 
     sensor_msgs::PointCloud2 final_ros;
     pcl::toROSMsg(*final_cloud, final_ros);
@@ -401,6 +411,9 @@ void callback(const PointCloud2::ConstPtr& camera_cloud,
     to_send.cloud = final_ros;
 
     final_pub.publish(to_send);
+
+    if(TEST) ROS_INFO("[TEST-STEREO]Pattern centers published !!!");
+
   }
 }
 
@@ -429,6 +442,7 @@ int main(int argc, char **argv){
   no_circles_pub = nh_.advertise<PointCloud2> ("no_circles", 1);
   cumulative_pub = nh_.advertise<PointCloud2> ("cumulative_cloud", 1);
   final_pub = nh_.advertise<velo2cam_calibration::ClusterCentroids> ("centers_cloud", 1);
+  //centers_pub = nh_.advertise<velo2cam_calibration::ClusterCentroids> ("centers_cloud", 1);  // TODO - view found centers
   transf_pub = nh_.advertise<PointCloud2> ("transf_cam", 1);
   auxpoint_pub= nh_.advertise<PointCloud2> ("aux_point", 1);
 
@@ -446,7 +460,7 @@ int main(int argc, char **argv){
   nh_.param("border_distance_inliers", border_distance_inliers_, 0.05);
   nh_.param("min_line_inliers", min_line_inliers_, 1200); //TODO: Adapt to the distance to the plane
   nh_.param("cluster_size", cluster_size_, 0.02);
-  nh_.param("min_centers_found", min_centers_found_, 4);
+  nh_.param("min_centers_found", min_centers_found_, 3);  //TODO -To experiment with just 3 centers
 
   dynamic_reconfigure::Server<velo2cam_calibration::CameraConfig> server;
   dynamic_reconfigure::Server<velo2cam_calibration::CameraConfig>::CallbackType f;

@@ -58,6 +58,7 @@
 
 using namespace std;
 using namespace sensor_msgs;
+bool TEST = 1;
 
 ros::Publisher aux_pub, aux2_pub;
 ros::Publisher t_pub;
@@ -100,7 +101,7 @@ const std::string currentDateTime() {
 }
 
 void calibrateExtrinsics(int seek_iter = -1){
-  // ROS_INFO("Hey man, keep calm... I'm calibrating your sensors...");
+  ROS_INFO("Hey man, keep calm... I'm calibrating your sensors...");
 
   std::vector<pcl::PointXYZ> local_lv, local_cv;
   pcl::PointCloud<pcl::PointXYZ>::Ptr local_laser_cloud, local_camera_cloud;
@@ -199,7 +200,7 @@ void calibrateExtrinsics(int seek_iter = -1){
   0, 0, 1, x[2],
   0, 0, 0, 1;
 
-  if(DEBUG) ROS_INFO("Step 1: Translation");
+  if(TEST) ROS_INFO("Step 1: Translation");
   if(DEBUG) cout << Tm << endl;
 
   pcl::PointCloud<pcl::PointXYZ>::Ptr translated_pc (new pcl::PointCloud<pcl::PointXYZ> ());
@@ -217,12 +218,12 @@ void calibrateExtrinsics(int seek_iter = -1){
   icp.setMaxCorrespondenceDistance(0.2);
   icp.setMaximumIterations(1000);
   if (icp.hasConverged()){
-    if(DEBUG) ROS_INFO("ICP Converged. Score: %lf", icp.getFitnessScore());
+    if(TEST) ROS_INFO("ICP Converged. Score: %lf", icp.getFitnessScore());
   }else{
     ROS_WARN("ICP failed to converge");
     return;
   }
-  if(DEBUG) ROS_INFO("Step 2. ICP Transformation:");
+  if(TEST) ROS_INFO("Step 2. ICP Transformation:");
   if(DEBUG) cout << icp.getFinalTransformation() << std::endl;
 
   Eigen::Matrix4f transformation = icp.getFinalTransformation ();
@@ -233,8 +234,8 @@ void calibrateExtrinsics(int seek_iter = -1){
   final_trans(1,0), final_trans(1,1), final_trans(1,2),
   final_trans(2,0), final_trans(2,1), final_trans(2,2));
 
-  if(DEBUG) ROS_INFO("Final Transformation");
-  if(DEBUG) cout << final_trans << endl;
+  if(TEST) ROS_INFO("Final Transformation");
+  if(TEST) cout << final_trans << endl;
 
   tf::Quaternion tfqt;
   tf3d.getRotation(tfqt);
@@ -304,7 +305,7 @@ void laser_callback(const velo2cam_calibration::ClusterCentroids::ConstPtr velo_
   laser_buffer.push_back(std::tuple<int,int,pcl::PointCloud<pcl::PointXYZ>, std::vector<pcl::PointXYZ> >(velo_centroids->total_iterations, velo_centroids->cluster_iterations, *laser_cloud,lv));
   laser_count = velo_centroids->total_iterations;
 
-  if(DEBUG) ROS_INFO("[V2C] LASER");
+  if(TEST) ROS_INFO("[V2C] LASER");
 
   for(vector<pcl::PointXYZ>::iterator it=lv.begin(); it<lv.end(); ++it){
     if (DEBUG) cout << "l" << it - lv.begin() << "="<< "[" << (*it).x << " " << (*it).y << " " << (*it).z << "]" << endl;
@@ -410,7 +411,7 @@ void stereo_callback(velo2cam_calibration::ClusterCentroids::ConstPtr image_cent
   }
 
   if(laserReceived && cameraReceived){
-    if(DEBUG) ROS_INFO("[V2C] Calibrating...");
+    if(TEST) ROS_INFO("[V2C] Calibrating...");
     calibrateExtrinsics();
   }else{
     static tf::TransformBroadcaster br;
@@ -502,7 +503,7 @@ int main(int argc, char **argv){
   arg->SetAttribute("default","screen");
   root->LinkEndChild( arg );
 
-  string stereo_rotation = "0 0 0 -1.57079632679 0 -1.57079632679 stereo stereo_camera 10";
+  string stereo_rotation = "0 0 0 -1.57079632679 0 -1.57079632679 stereo zed_left_camera_optical_frame 10";
 
   TiXmlElement * stereo_rotation_node = new TiXmlElement( "node" );
   stereo_rotation_node->SetAttribute("pkg","tf");

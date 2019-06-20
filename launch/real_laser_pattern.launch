@@ -7,31 +7,39 @@
   <!-- PCL nodelet manager -->
   <node pkg="nodelet" type="nodelet" name="pcl_manager" args="manager" output="$(arg stdout)"/>
 
+
+<!-- TODO***************  horizontal +0- *********************** -->
+
   <node pkg="nodelet" type="nodelet" name="pass_through_z_velo" args="load pcl/PassThrough pcl_manager" output="$(arg stdout)">
     <remap from="~input" to="/velodyne_points" />
     <remap from="~output" to="/velodyne/z_filtered" />
     <rosparam>
       filter_field_name: y
-      filter_limit_min: -0.7 #right side      #horizontal +-
-      filter_limit_max:  0.5 #left side       
+      filter_limit_min: -0.7 <!--  right side   -->   
+      filter_limit_max:  0.5 <!-- left side -->       
       filter_limit_negative: False
       max_queue_size: 1
       keep_organized: False
     </rosparam>
   </node>
 
+
+<!-- TODO*************** depth/ distance from the velodyne ******* -->
+
   <node pkg="nodelet" type="nodelet" name="pass_through_x_velo" args="load pcl/PassThrough pcl_manager" output="$(arg stdout)">
     <remap from="~input" to="/velodyne/z_filtered" />
     <remap from="~output" to="/velodyne/xy_filtered" />
-    <rosparam>
+    <rosparam>      
       filter_field_name: x
-      filter_limit_min: 1 # depth/ distance from the velodyne
+      filter_limit_min: 1 <!-- depth/ distance from the velodyne -->
       filter_limit_max: 5
       filter_limit_negative: False
       max_queue_size: 1
       keep_organized: False
     </rosparam>
   </node>
+
+<!-- TODO - FINAL CLOUD - Adjust according to the distance of the board from velodyne -->
   <node pkg="velo2cam_calibration" type="laser_pattern" name="laser_pattern" output="screen">
     <remap from="~cloud1" to="/velodyne/xy_filtered"/>
     <rosparam>
@@ -39,9 +47,9 @@
       y: 0
       z: 1
       angle_threshold: 0.55
-      circle_radius: 0.12           # kind of similar to above
-      passthrough_radius_min: 2.5  # Adjust according to the distance of the board from velodyne
-      passthrough_radius_max: 3.0  # Check /laser_pattern/range_filtered_velo
+      circle_radius: 0.12          <!-- kind of similar to above -->
+      passthrough_radius_min: 2.5  
+      passthrough_radius_max: 3.0  <!-- Check /laser_pattern/range_filtered_velo -->
     </rosparam>
   </node>
 

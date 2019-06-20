@@ -73,8 +73,8 @@
     <remap from="~output" to="/$(arg cam_name)/edge_z_filtered_cloud" />
     <rosparam>
       filter_field_name: z
-      filter_limit_min: 2
-      filter_limit_max: 4
+      filter_limit_min: 2    
+      filter_limit_max: 3   <!-- TODO def 4 -->
       filter_limit_negative: False
       max_queue_size: 1
       keep_organized: False
@@ -87,8 +87,8 @@
     <remap from="~output" to="/$(arg cam_name)/z_filtered_cloud" />
     <rosparam>
       filter_field_name: z
-      filter_limit_min: 2
-      filter_limit_max: 4
+      filter_limit_min: 2.5
+      filter_limit_max: 2.7
       filter_limit_negative: False
       max_queue_size: 1
       keep_organized: False
